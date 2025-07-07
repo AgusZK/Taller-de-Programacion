@@ -1,0 +1,15 @@
+r-Info3.1.jar
+resumen teorico.txt
+/objetos/TPProyectoAlumnos.zip
+/objetos/manifest.mf
+/objetos/build.xml
+
+/objetos/build/
+/objetos/nbproject/
+/objetos/practica5repaso/build/
+/objetos/practica5repaso/nbproject/
+/objetos/src/ayudas
+
+**/build.xml
+**/manifest.mf
+**/test/

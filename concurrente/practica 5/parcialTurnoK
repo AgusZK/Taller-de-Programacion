@@ -1,0 +1,104 @@
+programa parcialTurnoK
+procesos
+  proceso checkId (E id: numero)
+  variables
+    lado: numero
+  comenzar
+    Random(lado,1,5)
+    si (id = 1)
+      EnviarMensaje(lado,r1)
+    sino
+      si(id = 2)
+        EnviarMensaje(lado,r2)
+      sino
+        EnviarMensaje(lado,r3)
+  fin
+  proceso dejarEn50
+  variables
+    avAux, caAux: numero
+  comenzar
+    avAux:= PosAv
+    caAux:= PosCa
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    mientras (HayFlorEnLaBolsa)
+      depositarFlor
+    Pos(avAux,caAux)
+    LiberarEsquina(50,50)   
+  fin
+  proceso juntarFlores( ES flo : numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flo:= flo + 1
+  fin
+  proceso cuadrado (E lado: numero ; ES flores: numero)
+  comenzar
+    repetir 4
+      repetir lado
+        mover
+        juntarFlores(flores)
+      derecha
+    repetir lado {LO DEJO LISTO PARA RECIBIR EL PROXIMO}
+      mover
+  fin
+areas
+  area1: AreaP (1,1,7,15)
+  area2: AreaP (8,1,14,15)
+  area3: AreaP (15,1,21,15)
+  areaServidor: AreaP (22,1,22,1)
+  areaTrabajo: AreaPC (50,50,50,50)
+robots
+  robot cliente
+  variables
+    id,lado, flores: numero
+  comenzar
+    flores:= 0
+    RecibirMensaje(id,serv)
+    repetir 3
+      EnviarMensaje(id,serv)
+      RecibirMensaje(lado,serv)
+      cuadrado(lado, flores)
+    dejarEn50
+    EnviarMensaje(0,serv) { FLAG DE FIN  }   
+  fin
+  robot servidor
+  variables
+    floresCant,terminados,id,num: numero
+    final: boolean
+  comenzar
+    floresCant:= 0
+    terminados:= 0
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    repetir 9
+      RecibirMensaje(id,*)
+      checkId(id)
+    repetir 3
+      RecibirMensaje(num,*)
+    Pos(50,50)
+    juntarFlores(floresCant)
+    Informar('FLORES',floresCant)
+  fin
+variables
+  r1: cliente
+  r2: cliente
+  r3: cliente
+  serv: servidor
+comenzar
+  AsignarArea(r1,area1)
+  AsignarArea(r2,area2)
+  AsignarArea(r3,area3)
+  AsignarArea(serv,areaServidor)
+  AsignarArea(r1,areaTrabajo)
+  AsignarArea(r2,areaTrabajo)
+  AsignarArea(r3,areaTrabajo)
+  AsignarArea(serv,areaTrabajo)
+  
+  Iniciar(r1,1,1)
+  Iniciar(r2,8,1)
+  Iniciar(r3,15,1)
+  Iniciar(serv,22,1)
+ 
+fin

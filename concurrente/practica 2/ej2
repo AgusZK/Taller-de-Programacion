@@ -1,0 +1,77 @@
+programa ej2
+procesos
+  proceso procesarEsquina(ES cant: numero)
+  variables
+    flo: numero
+    pap: numero
+  comenzar
+    flo:= 0
+    pap:= 0
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flo:= flo + 1
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      pap:= pap + 1
+    si (flo > pap)
+      cant:= cant + 1
+  fin
+  proceso escalones (ES cant: numero ; E alto: numero ; E ancho: numero)
+  comenzar
+    repetir 4
+      repetir alto
+        procesarEsquina(cant)
+        mover
+      derecha  
+      repetir ancho
+        procesarEsquina(cant)
+        mover
+      repetir 3
+        derecha       
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot robot1
+  variables
+    alt: numero
+    cant: numero
+  comenzar
+    cant:= 0
+    RecibirMensaje(alt,fiscal)
+    escalones(cant,alt,1)
+    EnviarMensaje(cant,fiscal)
+  fin
+  robot fiscalizador
+  variables
+    total: numero
+    alto: numero
+    suma: numero
+  comenzar
+    total:= 0
+    Random(alto,1,5)
+    EnviarMensaje(alto,r1)
+    Random(alto,1,5)
+    EnviarMensaje(alto,r2)
+    Random(alto,1,5)
+    EnviarMensaje(alto,r3)
+    repetir 3
+      RecibirMensaje(suma,*)
+      total:= total + suma
+    Informar('SUMA TOTAL',total)
+  fin
+variables
+  r1: robot1
+  r2: robot1
+  r3: robot1
+  fiscal: fiscalizador
+comenzar
+  AsignarArea(fiscal,ciudad)
+  AsignarArea(r1, ciudad)
+  AsignarArea(r2,ciudad)
+  AsignarArea(r3,ciudad)
+  Iniciar(fiscal,1,1)
+  Iniciar(r1, 2,1)
+  Iniciar(r2,7,1)
+  Iniciar(r3,12,1)
+fin
