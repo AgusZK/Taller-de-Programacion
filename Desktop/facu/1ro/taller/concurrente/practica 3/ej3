@@ -1,0 +1,107 @@
+programa ej3
+procesos
+  proceso CalcularMax(ES idMax: numero; ES id: numero ; ES max: numero ; ES aux: numero)
+  comenzar
+    si(aux>max)
+      max:= aux
+      idMax:= id
+  fin
+  proceso RecibirFlores(ES flores: numero ; E id: numero)
+  comenzar
+    si (id = 1)
+      RecibirMensaje(flores,r1)
+    si (id = 2)
+      RecibirMensaje(flores,r2)
+    si (id = 3)
+      RecibirMensaje(flores,r3)
+    si (id = 4)
+      RecibirMensaje(flores,r4)
+  fin
+  proceso enviarID
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+  fin
+  proceso enviarEsquinas(E av: numero ; E ca: numero)
+  comenzar
+    EnviarMensaje(av,r1)
+    EnviarMensaje(ca,r1)
+    EnviarMensaje(av,r2)
+    EnviarMensaje(ca,r2)
+    EnviarMensaje(av,r3)
+    EnviarMensaje(ca,r3)
+    EnviarMensaje(av,r4)
+    EnviarMensaje(ca,r4)
+  fin
+  proceso procesarEsquina(ES cant: numero ES ocupado: boolean)
+  comenzar
+    si(HayFlorEnLaEsquina)
+      tomarFlor
+      cant:= cant + 1
+    sino
+      ocupado:= F
+  fin
+areas
+  Area1: AreaPC (2,2,10,10)
+  AreaIni: AreaC(1,1,5,1)
+robots
+  robot robot1
+  variables
+    id,av,ca,avIni,caIni,cant: numero
+    ocupado: boolean
+  comenzar
+    avIni:= PosAv
+    caIni:= PosCa
+    RecibirMensaje(id,j)
+    RecibirMensaje(av,j)
+    RecibirMensaje(ca,j)
+    ocupado:= V
+    mientras ocupado
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      procesarEsquina(cant,ocupado)
+      Pos(avIni,caIni)
+      LiberarEsquina(av,ca)
+    EnviarMensaje(id,j)
+    EnviarMensaje(cant,j)
+  fin
+  robot jefe
+  variables
+    idMax,id,aux: numero
+    max,av,ca: numero
+  comenzar
+    max:= -1
+    Random(av,2,10)
+    Random(ca,2,10)
+    enviarID
+    enviarEsquinas(av,ca)
+    repetir 4
+      RecibirMensaje(id,*)
+      RecibirFlores(aux,id)
+      CalcularMax(idMax,id,max,aux)
+    Informar('EL ROBOT QUE JUNTO MAS FUE',idMax)
+  fin
+variables
+  r1: robot1
+  r2: robot1
+  r3: robot1
+  r4: robot1
+  j: jefe
+comenzar
+  AsignarArea(j,AreaIni)
+  AsignarArea(r1,AreaIni)
+  AsignarArea(r2,AreaIni)
+  AsignarArea(r3,AreaIni)
+  AsignarArea(r4,AreaIni)
+  AsignarArea(r1,Area1)
+  AsignarArea(r2,Area1)
+  AsignarArea(r3,Area1)
+  AsignarArea(r4,Area1)
+  Iniciar(j,1,1)
+  Iniciar(r1,2,1)
+  Iniciar(r2,3,1)
+  Iniciar(r3,4,1)
+  Iniciar(r4,5,1)
+fin

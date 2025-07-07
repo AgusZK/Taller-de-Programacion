@@ -1,0 +1,86 @@
+programa ej3
+procesos
+  proceso recorrerPapeles(ES pap: numero)
+  comenzar
+    repetir 9
+      mientras(HayPapelEnLaEsquina)
+        tomarPapel
+        pap:= pap + 1
+      mover
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      pap:= pap + 1
+  fin
+  proceso recorrerFlores(ES flo: numero)
+  comenzar
+    repetir 9
+      mientras(HayFlorEnLaEsquina)
+        tomarFlor
+        flo:= flo + 1
+      mover
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      flo:= flo + 1      
+  fin
+areas
+  ciudad: AreaC (1,1,100,100)
+robots
+  robot A1
+  variables
+    pap: numero
+  comenzar
+    pap:= 0
+    derecha
+    recorrerPapeles(pap)
+    EnviarMensaje(pap,rA2)
+  fin
+  robot A2
+  variables
+    total: numero
+    pap: numero
+  comenzar
+    total:= 0
+    pap:= 0
+    derecha
+    RecibirMensaje(total,rA1)
+    recorrerPapeles(pap)
+    total:= total + pap
+    Informar('SUMA PAPELES', total)
+  fin
+  robot B1
+  variables
+    flo: numero
+  comenzar
+    flo:= 0
+    derecha
+    recorrerFlores(flo)
+    EnviarMensaje(flo,rB2)
+  fin
+  robot B2
+  variables
+    total: numero
+    flo: numero
+  comenzar
+    total:= 0
+    flo:= 0
+    RecibirMensaje(total,rB1)
+    derecha
+    recorrerFlores(flo)
+    total:= total + flo
+    Informar('SUMA FLORES',total)
+  fin
+variables
+  rA1: A1
+  rA2: A2
+  rB1: B1
+  rB2: B2
+comenzar
+  AsignarArea(rA1,ciudad)
+  AsignarArea(rA2,ciudad)
+  AsignarArea(rB1,ciudad)
+  AsignarArea(rB2,ciudad)
+  Iniciar(rA1,1,1)
+  Iniciar(rA2,11,1)
+  Iniciar(rB1,1,5)
+  Iniciar(rB2,11,5)
+fin

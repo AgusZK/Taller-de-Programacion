@@ -1,0 +1,84 @@
+programa ej4 {INCISO B ME DIO PAJA}
+procesos
+  proceso juntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso enviarID
+  comenzar
+    EnviarMensaje(1,r1)
+    EnviarMensaje(2,r2)
+    EnviarMensaje(3,r3)
+    EnviarMensaje(4,r4)
+  fin
+  proceso moverFlor(E av: numero ; E ca: numero ; ES ocu: boolean)
+  comenzar
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    si(HayFlorEnLaEsquina)
+      tomarFlor
+      BloquearEsquina(11,11)
+      Pos(11,11)
+      LiberarEsquina(10,10)
+      depositarFlor
+      Pos(av,ca)
+      LiberarEsquina(11,11)
+    sino
+      Pos(av,ca)
+      LiberarEsquina(10,10)
+      ocu:= F
+  fin
+areas
+  areaTrabajo: AreaPC (10,10,11,11)
+  areaIni: AreaC(9,9,9,12)
+  areaCor: AreaP(1,1,1,1)
+robots
+  robot robot1
+  variables
+    id,avIni,caIni: numero
+    ocupado: boolean
+  comenzar
+    avIni:= PosAv
+    caIni:= PosCa
+    RecibirMensaje(id,cor)
+    ocupado:= V
+    mientras ocupado
+      moverFlor(avIni,caIni,ocupado)
+    EnviarMensaje(id,cor)
+  fin
+  robot coordinador
+  variables
+    idUltimo: numero
+  comenzar
+    enviarID
+    repetir 4
+      RecibirMensaje(idUltimo,*)
+    Informar('EL ULTIMO FUE',idUltimo)
+    Pos(11,11)
+    juntarFlores
+  fin
+variables
+  r1: robot1
+  r2: robot1
+  r3: robot1
+  r4: robot1
+  cor: coordinador
+comenzar
+  AsignarArea(r1,areaIni)
+  AsignarArea(r2,areaIni)
+  AsignarArea(r3,areaIni)
+  AsignarArea(r4,areaIni)
+  AsignarArea(cor,areaCor)
+  AsignarArea(r1,areaTrabajo)
+  AsignarArea(r2,areaTrabajo)
+  AsignarArea(r3,areaTrabajo)
+  AsignarArea(r4,areaTrabajo)
+  AsignarArea(cor,areaTrabajo)
+  
+  Iniciar(cor,1,1)
+  Iniciar(r1,9,9)
+  Iniciar(r2,9,10)
+  Iniciar(r3,9,11)
+  Iniciar(r4,9,12)
+fin
